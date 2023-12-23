@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui version="4.0">
+	<class>CategoryClass</class>
+	<widget class="QWidget" name="CategoryClass">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>561</width>
+				<height>329</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>Category</string>
+		</property>
+		<layout class="QVBoxLayout" name="verticalLayout_2">
+			<item>
+				<widget class="QScrollArea" name="qsaArea">
+					<property name="verticalScrollBarPolicy">
+						<enum>Qt::ScrollBarAlwaysOn</enum>
+					</property>
+					<property name="horizontalScrollBarPolicy">
+						<enum>Qt::ScrollBarAlwaysOff</enum>
+					</property>
+					<property name="widgetResizable">
+						<bool>true</bool>
+					</property>
+					<widget class="QWidget" name="qwArea">
+						<property name="geometry">
+							<rect>
+								<x>0</x>
+								<y>0</y>
+								<width>524</width>
+								<height>309</height>
+							</rect>
+						</property>
+						<layout class="QVBoxLayout" name="verticalLayout">
+							<item>
+								<spacer name="vertSpacer">
+									<property name="orientation">
+										<enum>Qt::Vertical</enum>
+									</property>
+									<property name="sizeHint" stdset="0">
+										<size>
+											<width>20</width>
+											<height>288</height>
+										</size>
+									</property>
+								</spacer>
+							</item>
+						</layout>
+					</widget>
+				</widget>
+			</item>
+		</layout>
+	</widget>
+	<layoutdefault spacing="6" margin="11"/>
+	<resources/>
+	<connections/>
+</ui>

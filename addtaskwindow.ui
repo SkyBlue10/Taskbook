@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui version="4.0">
+	<class>AddTaskWindowClass</class>
+	<widget class="QDialog" name="AddTaskWindowClass">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>701</width>
+				<height>260</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>Add Task</string>
+		</property>
+		<property name="modal">
+			<bool>false</bool>
+		</property>
+		<layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0">
+			<item row="3" column="2">
+				<widget class="QDateTimeEdit" name="qdtPeriodEnd"/>
+			</item>
+			<item row="3" column="0">
+				<widget class="QLabel" name="qlPeriod">
+					<property name="text">
+						<string>Period of execution</string>
+					</property>
+				</widget>
+			</item>
+			<item row="1" column="0">
+				<widget class="QLabel" name="qlTextTask">
+					<property name="text">
+						<string>Task text</string>
+					</property>
+				</widget>
+			</item>
+			<item row="0" column="0">
+				<widget class="QLabel" name="qlNameTask">
+					<property name="text">
+						<string>Task name</string>
+					</property>
+				</widget>
+			</item>
+			<item row="1" column="2">
+				<widget class="QLineEdit" name="qleTextTask"/>
+			</item>
+			<item row="0" column="2">
+				<widget class="QLineEdit" name="qleNameTask"/>
+			</item>
+			<item row="6" column="0">
+				<widget class="QLabel" name="qlCategory">
+					<property name="text">
+						<string>The category of the task</string>
+					</property>
+				</widget>
+			</item>
+			<item row="5" column="0" colspan="2">
+				<widget class="QLabel" name="qlImportant">
+					<property name="text">
+						<string>The important of the task </string>
+					</property>
+				</widget>
+			</item>
+			<item row="7" column="2">
+				<layout class="QHBoxLayout" name="qhblButtons">
+					<item>
+						<widget class="QPushButton" name="pbAccept">
+							<property name="text">
+								<string>Accept</string>
+							</property>
+						</widget>
+					</item>
+					<item>
+						<widget class="QPushButton" name="pbReject">
+							<property name="text">
+								<string>Reject</string>
+							</property>
+						</widget>
+					</item>
+				</layout>
+			</item>
+			<item row="6" column="2">
+				<widget class="QLabel" name="qlCurrentCategory">
+					<property name="text">
+						<string/>
+					</property>
+				</widget>
+			</item>
+			<item row="5" column="2">
+				<widget class="QLineEdit" name="qleImportant"/>
+			</item>
+		</layout>
+	</widget>
+	<layoutdefault spacing="6" margin="11"/>
+	<resources/>
+	<connections/>
+</ui>
