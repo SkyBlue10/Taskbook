@@ -149,7 +149,7 @@ void TaskBook::openSettings()
     dlg.exec();
 }
 
-
+//
 //void TaskBook::taskIsComplete(int id)
 //{
 //    if (tasks[id]->getCategory() == "All") {
