@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "ui_taskbook.h"
 #include "task.h"
+#include "completetaskswindow.h"
 
 class TaskBook : public QWidget
 {
@@ -14,10 +15,10 @@ public:
     int getSize();
 
     void add(Task* task);
+    void addComplete(Task* cTask);
+    void addFromComplete(Task* for_all, Task* for_category);
     void delTask(int);
     void editTask(int);
-
-
 
 
 public slots:
@@ -25,6 +26,7 @@ public slots:
     void addCategory();
     void onTabCloseRequested(int index);
     void openSettings();
+    void openCompleteTasks();
 
 //signals:
 //    void taskIsComplete(int);
@@ -33,8 +35,11 @@ public slots:
 private:
     TaskBook(QWidget* parent = nullptr);
     static TaskBook* instance;
+    CompleteTasksWindow* complete_tasks;
 
     Ui::TaskBookClass ui;
     std::map<int, Task*> tasks;
     int size;//кол-во задач
+
+    void loadTasks();
 };

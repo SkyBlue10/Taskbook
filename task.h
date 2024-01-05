@@ -35,8 +35,13 @@ public slots:
 	void editTask();
 	void onStateChanged(int);
 
+signals:
+
+
 private:
 	Ui::TaskClass ui;
 	int id;//id самого задачника
-	int pair_id;//id пары (NULL, если нет)
+	int pair_id;//id пары (-1, если пара отсуствует)
+
+	void prepare_complete_task();
 };

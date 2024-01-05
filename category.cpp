@@ -1,11 +1,11 @@
 #include "category.h"
 #include <QTabWidget>
 
-Category::Category(QWidget* parent)
+Category::Category(QString category_name, QWidget* parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-
+	setObjectName(category_name);
 }
 
 Category::~Category()

@@ -10,7 +10,7 @@ class Category : public QWidget
 	Q_OBJECT
 
 public:
-	Category(QWidget* parent = nullptr);
+	Category(QString category_name, QWidget* parent = nullptr);
 	~Category();
 
 	void addTask(Task*);

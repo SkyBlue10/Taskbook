@@ -8,6 +8,7 @@
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QScrollArea>
+#include "QSqlDatabase"
 
 
 TaskBook::TaskBook(QWidget* parent)
@@ -15,11 +16,24 @@ TaskBook::TaskBook(QWidget* parent)
 {
     ui.setupUi(this);
     ui.categories->currentWidget()->objectName();
+    size = 0;
+    complete_tasks = new CompleteTasksWindow(this);
+
     connect(ui.qpbAddTask, SIGNAL(clicked()), this, SLOT(addTask()));
     connect(ui.qpbAddCategory, SIGNAL(clicked()), this, SLOT(addCategory()));
     connect(ui.qpbSettings, SIGNAL(clicked()), this, SLOT(openSettings()));
     connect(ui.categories, &QTabWidget::tabCloseRequested, this, &TaskBook::onTabCloseRequested);
-    size = 0;
+    connect(ui.qpbCompleteTasks, SIGNAL(clicked()), this, SLOT(openCompleteTasks()));
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL", "tasks_db");
+    loadTasks();
+}
+
+void TaskBook::loadTasks()
+{
+    QSqlDatabase db = QSqlDatabase::database("tasks_db");
+    db.open();
+
 }
 
 TaskBook::~TaskBook()
@@ -47,13 +61,55 @@ void TaskBook::add(Task* task)
     size++;
 }
 
+void TaskBook::addComplete(Task* cTask)
+{
+    complete_tasks->addTask(cTask);
+}
+
+void TaskBook::addFromComplete(Task* for_all, Task* for_category)
+{
+    if (for_category == nullptr) {
+        for_all->setId(this->getSize());
+        for_all->setIdPair(-1);
+        add(for_all);
+
+        QVBoxLayout* categoryAll = qobject_cast<QVBoxLayout*>(ui.qsaArea->widget()->layout());
+        categoryAll->insertWidget(0, for_all);
+
+        complete_tasks->del(for_all->getDate());
+
+        return;
+    }
+    else {
+        for_all->setId(this->getSize());
+        add(for_all);
+        for_category->setId(this->getSize());
+        add(for_category);
+
+        for_all->setIdPair(for_category->getId());
+        for_category->setIdPair(for_all->getId());
+
+        for (int i = 0; i < ui.categories->count(); i++)
+        {
+            if (ui.categories->widget(i)->objectName() == for_category->getCategory()) {
+                Category* currentCategory = qobject_cast<Category*>(ui.categories->widget(i));
+                currentCategory->addTask(for_category);
+                break;
+            }
+        }
+        QVBoxLayout* categoryAll = qobject_cast<QVBoxLayout*>(ui.qsaArea->widget()->layout());
+        categoryAll->insertWidget(0, for_all);
+        complete_tasks->del(for_all->getDate());
+    }
+}
+
 void TaskBook::addCategory()
 {
     AddCategoryWindow dlg(ui.categories, this);
     switch (dlg.exec())
     {
     case QDialog::Accepted: {
-        Category* newCategory = new Category();
+        Category* newCategory = new Category(dlg.getQLEInputCategory());
         int index = ui.categories->addTab(newCategory, dlg.getQLEInputCategory());
         ui.categories->widget(index)->setObjectName(dlg.getQLEInputCategory());
         break;
@@ -80,34 +136,34 @@ void TaskBook::addTask() {//переписать, использовав map tasks
             );
 
             task->setId(TaskBook::getSize());
-            task->setIdPair(NULL);
+            task->setIdPair(-1);
             add(task);
 
             QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui.qsaArea->widget()->layout());
             layout->insertWidget(0, task);
         }
         else {
-            Task* task_for_current_category = new Task(
-                dlg.getQLENameTask(), dlg.getQLETextTask(), dlg.getDatePeriodEnding(), dlg.getCBImportant(), nameWidget
-            );
-            task_for_current_category->setId(TaskBook::getSize());
-            add(task_for_current_category);
-
             Task* task_for_category_All = new Task(
                 dlg.getQLENameTask(), dlg.getQLETextTask(), dlg.getDatePeriodEnding(), dlg.getCBImportant(), nameWidget
             );
             task_for_category_All->setId(TaskBook::getSize());
             add(task_for_category_All);
 
+            Task* task_for_current_category = new Task(
+                dlg.getQLENameTask(), dlg.getQLETextTask(), dlg.getDatePeriodEnding(), dlg.getCBImportant(), nameWidget
+            );
+            task_for_current_category->setId(TaskBook::getSize());
+            add(task_for_current_category);
 
-            task_for_category_All->setIdPair(task_for_current_category->getId());
+
             task_for_current_category->setIdPair(task_for_category_All->getId());
+            task_for_category_All->setIdPair(task_for_current_category->getId());
 
-            Category* currentCategory = qobject_cast<Category*>(ui.categories->currentWidget());
             QVBoxLayout* categoryAll = qobject_cast<QVBoxLayout*>(ui.qsaArea->widget()->layout());
+            Category* currentCategory = qobject_cast<Category*>(ui.categories->currentWidget());
 
-            currentCategory->addTask(task_for_current_category);
             categoryAll->insertWidget(0, task_for_category_All);
+            currentCategory->addTask(task_for_current_category);
         }
         break;
     }
@@ -121,6 +177,7 @@ void TaskBook::addTask() {//переписать, использовав map tasks
 
 void TaskBook::onTabCloseRequested(int index)
 {
+    //добавить окно с упоминанием, что все задачи этой категории не сохранятся
     if (ui.categories->widget(index)->objectName() == "qwAll") {
         return;
     }
@@ -149,7 +206,11 @@ void TaskBook::openSettings()
     dlg.exec();
 }
 
-//
+void TaskBook::openCompleteTasks()
+{
+    complete_tasks->exec();
+}
+
 //void TaskBook::taskIsComplete(int id)
 //{
 //    if (tasks[id]->getCategory() == "All") {
@@ -171,7 +232,7 @@ void TaskBook::delTask(int id)
 {
     QWidget* deleted;
     int idPair = tasks.at(id)->getIdPair();
-    if (idPair != NULL) {
+    if (idPair != -1) {
         deleted = qobject_cast<QWidget*>(tasks[idPair]);
         delete deleted;
         tasks.erase(idPair);

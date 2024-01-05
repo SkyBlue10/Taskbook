@@ -38,12 +38,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.6.1</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;sql</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.6.1</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;sql</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -93,7 +93,9 @@
     <QtUic Include="aboutsettings.ui" />
     <QtUic Include="addcategorywindow.ui" />
     <QtUic Include="addtaskwindow.ui" />
+    <QtUic Include="blockofcompletedtasks.ui" />
     <QtUic Include="category.ui" />
+    <QtUic Include="completetaskswindow.ui" />
     <QtUic Include="edittaskwindow.ui" />
     <QtUic Include="menuwindow.ui" />
     <QtUic Include="task.ui" />
@@ -102,7 +104,9 @@
     <ClCompile Include="aboutsettings.cpp" />
     <ClCompile Include="addcategorywindow.cpp" />
     <ClCompile Include="addtaskwindow.cpp" />
+    <ClCompile Include="blockofcompletedtasks.cpp" />
     <ClCompile Include="category.cpp" />
+    <ClCompile Include="completetaskswindow.cpp" />
     <ClCompile Include="edittaskwindow.cpp" />
     <ClCompile Include="menuwindow.cpp" />
     <ClCompile Include="task.cpp" />
@@ -129,6 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="edittaskwindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="completetaskswindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="blockofcompletedtasks.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
