@@ -29,7 +29,7 @@ QString AddTaskWindow::getQLETextTask()
 
 QString AddTaskWindow::getDatePeriodEnding()
 {
-	return ui.qdtPeriodEnd->dateTime().toString();
+	return ui.qdePeriodEnd->dateTime().toString("yyyy-MM-dd");
 }
 
 QString AddTaskWindow::getCBImportant()

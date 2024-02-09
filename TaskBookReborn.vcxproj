@@ -108,6 +108,7 @@
     <ClCompile Include="category.cpp" />
     <ClCompile Include="completetaskswindow.cpp" />
     <ClCompile Include="edittaskwindow.cpp" />
+    <ClCompile Include="LogSystem.cpp" />
     <ClCompile Include="menuwindow.cpp" />
     <ClCompile Include="task.cpp" />
     <ClCompile Include="taskbook.cpp" />
@@ -139,6 +140,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="blockofcompletedtasks.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LogSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

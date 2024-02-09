@@ -67,6 +67,9 @@
     <ClCompile Include="blockofcompletedtasks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LogSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="task.h">
@@ -125,5 +128,10 @@
     <QtUic Include="blockofcompletedtasks.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LogSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

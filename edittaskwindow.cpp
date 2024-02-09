@@ -9,15 +9,18 @@ EditTaskWindow::EditTaskWindow(Task* edited, QWidget* parent)
 	connect(ui.pbAccept, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(ui.pbReject, SIGNAL(clicked()), this, SLOT(reject()));
 
-	ui.qlOldName->setText("Old name: " + edited->getName());
-	ui.qlOldText->setText("Old text: " + edited->getText());
-	ui.qlOldDate->setText("Old date: " + edited->getDate());
-	ui.qlOldImportant->setText("Old important: " + edited->getImportant());
+	ui.qlOldName->setText("Old value: " + edited->getName());
+	ui.qlOldText->setText("Old value: " + edited->getText());
+	ui.qlOldDate->setText("Old value: " + edited->getDate());
+	ui.qlOldImportant->setText("Old value: " + edited->getImportant());
 
 	ui.qleNameTask->setText(edited->getName());
 	ui.qleTextTask->setText(edited->getText());
-	//ui.qdteDate->setDateTime(edited->getDate());
-	//нужно чтото придумать в будущем с этим, пока что пусть там по умолчанию будет всё
+
+	int y = stoi(edited->getDate().toStdString().substr(0, 4)), m = stoi(edited->getDate().toStdString().substr(5, 2)), 
+		d = stoi(edited->getDate().toStdString().substr(8, 2));
+	ui.qdeDate->setDateTime(QDateTime(QDate(y, m, d+1), QTime()));
+
 	ui.qleImportantTask->setText(edited->getImportant());
 }
 
@@ -36,7 +39,7 @@ QString EditTaskWindow::getNewText()
 
 QDateTime EditTaskWindow::getNewDate()
 {
-	return ui.qdteDate->dateTime();
+	return ui.qdeDate->dateTime();
 }
 
 QString EditTaskWindow::getNewInmportant()

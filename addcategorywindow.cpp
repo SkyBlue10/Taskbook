@@ -1,4 +1,5 @@
 #include "addcategorywindow.h"
+#include "LogSystem.h"
 
 AddCategoryWindow::AddCategoryWindow(QTabWidget* categories, QWidget* parent)
 	: QDialog(parent)
@@ -25,6 +26,7 @@ void AddCategoryWindow::setQLError(QString error)
 }
 
 void AddCategoryWindow::pbAcceptClicked() {
+	LogSystem::Write("The user adds a new category named " + getQLEInputCategory().toStdString());
 	QString nameCategory = getQLEInputCategory();
 	int count = categories->count();
 	for (int i = 0; i < count; i++)
@@ -34,5 +36,6 @@ void AddCategoryWindow::pbAcceptClicked() {
 			return;
 		}
 	}
+	LogSystem::Write("The new category has been successfully added");
 	accept();
 }

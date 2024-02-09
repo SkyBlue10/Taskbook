@@ -12,25 +12,21 @@ public:
     ~TaskBook();
 
     static TaskBook* getInstance();
-    int getSize();
 
-    void add(Task* task);
-    void addComplete(Task* cTask);
-    void addFromComplete(Task* for_all, Task* for_category);
+    void addComplete(Task* cTask, bool isNew = false);
+    void addFromComplete(Task* for_all, Task* for_category, QString endDate);
     void delTask(int);
     void editTask(int);
 
+    void writeInDB(Task* task);
+    void delFromDB(Task* task);
 
 public slots:
-    void addTask();
+    void addNewTask();
     void addCategory();
     void onTabCloseRequested(int index);
-    void openSettings();
+    //void openSettings(); 
     void openCompleteTasks();
-
-//signals:
-//    void taskIsComplete(int);
-//    void taskIsNotComplete(int);
 
 private:
     TaskBook(QWidget* parent = nullptr);
@@ -39,7 +35,12 @@ private:
 
     Ui::TaskBookClass ui;
     std::map<int, Task*> tasks;
-    int size;//кол-во задач
 
-    void loadTasks();
+    void addTaskInForm(Task* task);
+    void addTask(Task* task, Task* pairTask = nullptr);
+
+    void loadData();
+    void reindexing();
+
+    //void debug_foo(Task* task); //метод дл€ отладки, где € буду просматривать значени€ task. ѕозже убрать
 };

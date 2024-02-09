@@ -1,60 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-	<class>AddCategoryWindowClass</class>
-	<widget class="QDialog" name="AddCategoryWindowClass">
-		<property name="geometry">
-			<rect>
-				<x>0</x>
-				<y>0</y>
-				<width>500</width>
-				<height>110</height>
-			</rect>
-		</property>
-		<property name="windowTitle">
-			<string>AddCategoryWindow</string>
-		</property>
-		<layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0" columnstretch="0,1,0">
-			<item row="0" column="0">
-				<widget class="QLabel" name="qlInput">
-					<property name="text">
-						<string>Input a category</string>
-					</property>
-				</widget>
-			</item>
-			<item row="2" column="1" colspan="2">
-				<widget class="QLabel" name="qlError">
-					<property name="lineWidth">
-						<number>1</number>
-					</property>
-					<property name="text">
-						<string/>
-					</property>
-				</widget>
-			</item>
-			<item row="0" column="1" colspan="2">
-				<widget class="QLineEdit" name="qleInput"/>
-			</item>
-			<item row="1" column="1">
-				<layout class="QHBoxLayout" name="horizontalLayout">
-					<item>
-						<widget class="QPushButton" name="pbAccept">
-							<property name="text">
-								<string>Accept</string>
-							</property>
-						</widget>
-					</item>
-					<item>
-						<widget class="QPushButton" name="pbReject">
-							<property name="text">
-								<string>Cancel</string>
-							</property>
-						</widget>
-					</item>
-				</layout>
-			</item>
-		</layout>
-	</widget>
-	<layoutdefault spacing="6" margin="11"/>
-	<resources/>
-	<connections/>
+ <class>AddCategoryWindowClass</class>
+ <widget class="QDialog" name="AddCategoryWindowClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>110</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add Category</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0" columnstretch="0,1,0">
+   <item row="2" column="1" colspan="2">
+    <widget class="QLabel" name="qlError">
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="2">
+    <widget class="QLineEdit" name="qleInput"/>
+   </item>
+   <item row="1" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pbAccept">
+       <property name="text">
+        <string>Accept</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pbReject">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="qlInput">
+     <property name="text">
+      <string>Enter the name of the category</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
 </ui>
