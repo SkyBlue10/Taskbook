@@ -3,7 +3,6 @@
 #include "addtaskwindow.h"
 #include "addcategorywindow.h"
 #include "category.h"
-//#include "menuwindow.h"
 #include "LogSystem.h"
 
 //std libs
@@ -31,13 +30,11 @@ TaskBook::TaskBook(QWidget* parent)
     ui.setupUi(this);
     LogSystem::Open();
     LogSystem::Write("Launching the program");
-    ui.qpbSettings->hide(); //пр€чем кнопку настроек, она дл€ информатички не понадобитс€
     ui.categories->currentWidget()->objectName();
     complete_tasks = new CompleteTasksWindow(this);
 
     connect(ui.qpbAddTask, SIGNAL(clicked()), this, SLOT(addNewTask())); //соединение кнопки добавлени€ задачи с слотом addTask
     connect(ui.qpbAddCategory, SIGNAL(clicked()), this, SLOT(addCategory())); //соединение кнопки добавлени€ категории с слотом addCategory
-    //connect(ui.qpbSettings, SIGNAL(clicked()), this, SLOT(openSettings())); //соединение кнопки открыти€ настроек с слотом openSettings
     connect(ui.categories, &QTabWidget::tabCloseRequested, this, &TaskBook::onTabCloseRequested); //соединени€ событи€ закрыти€ вкладки категории с слотом onTabCloseRequested
     connect(ui.qpbCompleteTasks, SIGNAL(clicked()), this, SLOT(openCompleteTasks())); //соединение кнопки открыти€ окна завершЄнных задач с слотом openCompleteTasks
 
@@ -122,7 +119,6 @@ void TaskBook::loadData()
         Task* task_for_all = new Task(query, rec);
         tasks.emplace(task_for_all->getId(), task_for_all);
         LogSystem::Write(task_for_all, "The task has been loaded: ");
-        //debug_foo(task_for_all);
 
         if (task_for_all->getPairId() != -1) 
         {
@@ -130,7 +126,6 @@ void TaskBook::loadData()
             task_for_category = new Task(query, rec);
             tasks.emplace(task_for_category->getId(), task_for_category);
             LogSystem::Write(task_for_category, "The task has been loaded: ");
-            //debug_foo(task_for_category);
         }
         addTaskInForm(task_for_all);
     }
@@ -144,7 +139,6 @@ void TaskBook::loadData()
         task->prepare_complete_task();
         LogSystem::Write(task, "The completed task has been loaded: ");
         addComplete(task);
-        //debug_foo(task);
     }
     db.close();
     LogSystem::Write("The task upload was successful\n");
@@ -215,9 +209,6 @@ void TaskBook::addTaskInForm(Task* task)
     LogSystem::Write("Call TaskBook::addTaskInForm(Task* task)");
     LogSystem::Write(task, "Adding a task to a window");
     LogSystem::Write(task, "Adding a task to the All category");
-    //debug_foo(task);
-    //if (task->getPairId() != -1)
-        //debug_foo(tasks[task->getPairId()]);
     QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui.qsaArea->widget()->layout());
     layout->insertWidget(0, task);
     LogSystem::Write(task, "Adding a task to the All category was successful");
@@ -241,8 +232,6 @@ void TaskBook::addTaskInForm(Task* task)
 void TaskBook::addTask(Task* task, Task* pairTask)
 {
     LogSystem::Write("Call TaskBook::addTask(Task* task, Task* pairTask)");
-    //debug_foo(task);
-    //debug_foo(pairTask);
     LogSystem::Write(task, "Adding a task to memory");
     tasks.empty() ? task->setId(0) : task->setId((--tasks.end())->first + 1); //если в tasks нет задач, то задаЄм задаче id = 0
     task->setPairId(-1);
@@ -265,7 +254,6 @@ void TaskBook::addComplete(Task* cTask, bool isNew)
 {
     LogSystem::Write("Call TaskBook::addComplete(Task* cTask, bool isNew)");
     LogSystem::Write(cTask, "Adding a task to the completed group");
-    //debug_foo(cTask);
     if (isNew)
         writeInDB(cTask);
 
@@ -464,14 +452,6 @@ void TaskBook::onTabCloseRequested(int index)
     LogSystem::Write("End of the call TaskBook::onTabCloseRequested(int index)\n");
 }
 
-//void TaskBook::openSettings()
-//{
-//    LogSystem::Write("Open settings");
-//    MenuWindow dlg(this);
-//    dlg.exec();
-//    LogSystem::Write("Close settings");
-//}
-
 void TaskBook::openCompleteTasks()
 {
     LogSystem::Write("Call TaskBook::openCompleteTasks()");
@@ -515,16 +495,3 @@ void TaskBook::editTask(int id)
     LogSystem::Write(tasks[idPair], "Editing a task was successful");
     LogSystem::Write("End of the call TaskBook::editTask(int id)\n");
 }
-
-//void TaskBook::debug_foo(Task* task) {
-//    if (task != nullptr) {
-//        int id = task->getId();
-//        int id_pair = task->getPairId();
-//        QString name = task->getName();
-//        QString text = task->getText();
-//        QString date = task->getDate();
-//        QString imp = task->getImportant();
-//        QString category = task->getCategory();
-//        bool isComplete = task->isComplete();
-//    }
-//}

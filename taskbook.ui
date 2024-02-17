@@ -17,16 +17,6 @@
    <item>
     <layout class="QVBoxLayout" name="left_column">
      <item>
-      <widget class="QPushButton" name="qpbSettings">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Settings</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="vertspacer3">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
