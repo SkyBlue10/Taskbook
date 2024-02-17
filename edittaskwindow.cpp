@@ -17,8 +17,8 @@ EditTaskWindow::EditTaskWindow(Task* edited, QWidget* parent)
 	ui.qleNameTask->setText(edited->getName());
 	ui.qleTextTask->setText(edited->getText());
 
-	int y = stoi(edited->getDate().toStdString().substr(0, 4)), m = stoi(edited->getDate().toStdString().substr(5, 2)), 
-		d = stoi(edited->getDate().toStdString().substr(8, 2));
+	int d = stoi(edited->getDate().toStdString().substr(0, 2)), m = stoi(edited->getDate().toStdString().substr(3, 2)), 
+		y = stoi(edited->getDate().toStdString().substr(6, 4));
 	ui.qdeDate->setDateTime(QDateTime(QDate(y, m, d+1), QTime()));
 
 	ui.qleImportantTask->setText(edited->getImportant());

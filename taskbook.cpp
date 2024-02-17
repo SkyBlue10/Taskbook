@@ -42,21 +42,20 @@ TaskBook::TaskBook(QWidget* parent)
     connect(ui.qpbCompleteTasks, SIGNAL(clicked()), this, SLOT(openCompleteTasks())); //соединение кнопки открытия окна завершённых задач с слотом openCompleteTasks
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE"); //добавляем базу
-    db.setDatabaseName("./data/tasks.sqlite"); //ставим имя базе (её место в файле)
+    db.setDatabaseName("./data/tasks.sqlite"); //ставим имя базе (путь к бд)
 
-    loadData(); //загрузка из БД данных
+    loadData(); //загрузка данных из БД 
 }
 
 void TaskBook::writeInDB(Task* task)
 {
     LogSystem::Write("Call TaskBook::writeInDB(Task* task)");
     LogSystem::Write(task, "Saving a task to the database");
-    //debug_foo(task);
     QSqlDatabase db = QSqlDatabase::database();
     db.open();
     QSqlQuery query;
     if (task->isComplete()) {
-        bool i = query.exec("INSERT INTO Complete VALUES('" + QString::number(task->getId()) + "', '" + QString::number(task->getPairId() != -1) + "', '"
+        bool i = query.exec("INSERT INTO Complete VALUES('" + QString::number(task->getId()) + "', '" + QString::number(task->getPairId()) + "', '"
             + task->getName() + "', '" + task->getText() + "', '" + task->getDate() + "', '" + task->getImportant()
             + "', '" + task->getCategory() + "', '" + task->getEndDate() + "');");
         std::string str = i ? "true" : "false";
@@ -101,7 +100,7 @@ void TaskBook::loadData()
         while (!file.eof())
         {
             std::getline(file, str);
-            if (str.empty() || str == "qwAll")
+            if (str.empty() || str == "All")
                 continue;
             new_category = new Category((QString)str.c_str());
             ui.categories->addTab(new_category, (QString)str.c_str());
@@ -278,20 +277,6 @@ void TaskBook::addComplete(Task* cTask, bool isNew)
 void TaskBook::addFromComplete(Task* for_all, Task* for_category, QString endDate) //---------------------------------------------------
 {
     LogSystem::Write("Call TaskBook::addFromComplete(Task* for_all, Task* for_category, QString endDate)");
-    bool presenceOfCategory = false;
-    for (int i = 0; i < ui.categories->count(); i++)
-    {
-        if (ui.categories->widget(i)->objectName() == for_category->getCategory()) { //проверка наличия категории задачи
-            presenceOfCategory = true;
-            LogSystem::Write("Category " + for_all->getCategory().toStdString() + " does not exist");
-            break;
-        }
-    }
-    if (!presenceOfCategory)  //если категория по какой то причине отсутствует
-    {
-        Category* currentCategory = new Category(for_all->getCategory(), true);
-        ui.categories->addTab(currentCategory, for_all->getCategory());
-    }
     if (for_category == nullptr) {
         addTask(for_all);
 
@@ -302,6 +287,20 @@ void TaskBook::addFromComplete(Task* for_all, Task* for_category, QString endDat
         writeInDB(for_all);
     }
     else {
+        bool presenceOfCategory = false;
+        for (int i = 0; i < ui.categories->count(); i++)
+        {
+            if (ui.categories->widget(i)->objectName() == for_category->getCategory()) { //проверка наличия категории задачи
+                presenceOfCategory = true;
+                LogSystem::Write("Category " + for_all->getCategory().toStdString() + " does not exist");
+                break;
+            }
+        }
+        if (!presenceOfCategory)  //если категория по какой то причине отсутствует
+        {
+            Category* currentCategory = new Category(for_all->getCategory(), true);
+            ui.categories->addTab(currentCategory, for_all->getCategory());
+        }
         addTask(for_all, for_category);
         for (int i = 0; i < ui.categories->count(); i++)
         {
@@ -355,7 +354,7 @@ void TaskBook::addNewTask() {
     {
     case QDialog::Accepted: {
         QString nameCategory = ui.categories->currentWidget()->objectName();
-        if (nameCategory == "qwAll") {
+        if (nameCategory == "All") {
             Task* task = new Task(
                 dlg.getQLENameTask(), dlg.getQLETextTask(), dlg.getDatePeriodEnding(), dlg.getCBImportant(), "All"
             );
@@ -402,7 +401,7 @@ void TaskBook::onTabCloseRequested(int index)
 {
     LogSystem::Write("Call TaskBook::onTabCloseRequested(int index)");
     QMessageBox msgBox;
-    if (ui.categories->widget(index)->objectName() == "qwAll") {
+    if (ui.categories->widget(index)->objectName() == "All") {
         msgBox.setText("You cannot delete the \"All\" category");
         msgBox.setWindowTitle("Warning");
         msgBox.setIcon(QMessageBox::Icon::Warning);
@@ -436,7 +435,7 @@ void TaskBook::onTabCloseRequested(int index)
             delFromDB(iter.second);
             delete iter.second;
             tasks.erase(iter.first);
-            LogSystem::Write(iter.second, "Deleting a task was successful");
+            LogSystem::Write("Deleting a task was successful");
         }
         LogSystem::Write("Removing a category from ui.categories");
         ui.categories->removeTab(index);
@@ -529,5 +528,3 @@ void TaskBook::editTask(int id)
 //        bool isComplete = task->isComplete();
 //    }
 //}
-
-//Улучшить лог-систему

@@ -77,7 +77,7 @@
      <property name="tabBarAutoHide">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="qwAll">
+     <widget class="QWidget" name="All">
       <attribute name="title">
        <string>All</string>
       </attribute>

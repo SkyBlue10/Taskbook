@@ -162,7 +162,7 @@ void Task::editTask()
 
 		ui.qlNameTask->setText(dlg.getNewName());
 		ui.qlTextTask->setText(dlg.getNewText());
-		ui.qlDatePeriod->setText(dlg.getNewDate().toString("yyyy-MM-dd"));
+		ui.qlDatePeriod->setText(dlg.getNewDate().toString("dd.MM.yyyy"));
 		ui.qlImportant->setText(dlg.getNewInmportant());
 		tb->delFromDB(this);
 		tb->writeInDB(this);
@@ -229,7 +229,7 @@ void Task::onStateChanged(int checked)
 		db.open();
 		QSqlQuery query;
 		query.exec("DELETE FROM Complete WHERE id = '" + QString::number(this->id) + "';");
-		db.close();
+		db.close(); //endDate
 		QString endDate = this->getEndDate();
 
 
@@ -245,7 +245,7 @@ void Task::onStateChanged(int checked)
 
 void Task::prepare_complete_task()
 {
-	this->setEndDate(QDate::currentDate().toString("yyyy-MM-dd"));
+	this->setEndDate(QDate::currentDate().toString("dd.MM.yyyy"));
 	ui.pbDelete->hide();
 	ui.pbEdit->hide(); 
 	bool oldState = ui.qcbIsComplete->blockSignals(true);

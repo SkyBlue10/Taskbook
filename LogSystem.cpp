@@ -31,5 +31,3 @@ void LogSystem::Write(Task* task, std::string str)
 			<< task->getId() << "\n\tpair id: " << task->getPairId() << "\n\tcomplete: " << task->isComplete() << "\n";
 	}
 }
-
-//не создаётся файл, разобраться. Возможно дело в в функции open(), а именно в std::ios::app

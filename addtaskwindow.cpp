@@ -9,6 +9,7 @@ AddTaskWindow::AddTaskWindow(QString category, QWidget* parent)
 		ui.qlCurrentCategory->setText("All");
 	else
 		ui.qlCurrentCategory->setText(category);
+	ui.qdePeriodEnd->setDate(QDate::currentDate().addDays(1));
 
 	connect(ui.pbAccept, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(ui.pbReject, SIGNAL(clicked()), this, SLOT(reject()));
@@ -29,7 +30,7 @@ QString AddTaskWindow::getQLETextTask()
 
 QString AddTaskWindow::getDatePeriodEnding()
 {
-	return ui.qdePeriodEnd->dateTime().toString("yyyy-MM-dd");
+	return ui.qdePeriodEnd->dateTime().toString("dd.MM.yyyy");
 }
 
 QString AddTaskWindow::getCBImportant()

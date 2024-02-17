@@ -1,6 +1,7 @@
 #include "taskbook.h"
 #include "LogSystem.h"
 #include <QApplication>
+#include <QException>
 
 TaskBook* TaskBook::instance = NULL;
 std::ofstream* LogSystem::logFile = nullptr;
@@ -15,6 +16,11 @@ int main(int argc, char* argv[])
 		app.exec();
 	}
 	catch (const std::exception& ex)
+	{
+		LogSystem::Write("ERROR: " + std::string(ex.what()));
+		LogSystem::Close();
+	}
+	catch (const QException& ex) 
 	{
 		LogSystem::Write("ERROR: " + std::string(ex.what()));
 		LogSystem::Close();
