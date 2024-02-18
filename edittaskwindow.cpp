@@ -1,4 +1,5 @@
 #include "edittaskwindow.h"
+#include "QMessageBox"
 
 EditTaskWindow::EditTaskWindow(Task* edited, QWidget* parent)
 	: QDialog(parent)
@@ -6,7 +7,15 @@ EditTaskWindow::EditTaskWindow(Task* edited, QWidget* parent)
 	ui.setupUi(this);
 	this->setFixedSize(650, 330);
 
-	connect(ui.pbAccept, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(ui.pbAccept, &QPushButton::clicked, this, [=]() {
+		if (!ui.qleNameTask->text().isEmpty() && !ui.qleTextTask->text().isEmpty() && !ui.qleImportantTask->text().isEmpty())
+			accept();
+		else
+		{
+			QMessageBox msg(QMessageBox::Icon::Warning, "An empty field", "Some field is empty, fill in all fields");
+			msg.exec();
+		}
+		});
 	connect(ui.pbReject, SIGNAL(clicked()), this, SLOT(reject()));
 
 	ui.qlOldName->setText("Old value: " + edited->getName());

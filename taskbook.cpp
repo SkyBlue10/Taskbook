@@ -403,7 +403,7 @@ void TaskBook::onTabCloseRequested(int index)
     QMessageBox msgBox;
     if (ui.categories->widget(index)->objectName() == "All") {
         msgBox.setText("You cannot delete the \"All\" category");
-        msgBox.setWindowTitle("Warning");
+        msgBox.setWindowTitle("Deleting the \"All\" category");
         msgBox.setIcon(QMessageBox::Icon::Warning);
         msgBox.exec();
         return;

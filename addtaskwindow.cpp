@@ -1,4 +1,6 @@
 #include "addtaskwindow.h"
+#include "LogSystem.h"
+#include <QMessageBox>
 
 AddTaskWindow::AddTaskWindow(QString category, QWidget* parent)
 	: QDialog(parent)
@@ -11,7 +13,16 @@ AddTaskWindow::AddTaskWindow(QString category, QWidget* parent)
 		ui.qlCurrentCategory->setText(category);
 	ui.qdePeriodEnd->setDate(QDate::currentDate().addDays(1));
 
-	connect(ui.pbAccept, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(ui.pbAccept, &QPushButton::clicked, this, [=]() {
+		if (!ui.qleNameTask->text().isEmpty() && !ui.qleTextTask->text().isEmpty() && !ui.qleImportant->text().isEmpty())
+			accept();
+		else 
+		{
+			LogSystem::Write("The user did not fill in some field when creating a new task");
+			QMessageBox msg(QMessageBox::Icon::Warning, "An empty field", "Some field is empty, fill in all fields");
+			msg.exec();
+		}
+		});
 	connect(ui.pbReject, SIGNAL(clicked()), this, SLOT(reject()));
 }
 

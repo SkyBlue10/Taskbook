@@ -13,10 +13,6 @@ public:
 	~AddCategoryWindow();
 
 	QString getQLEInputCategory();
-	void setQLError(QString error);
-
-public slots:
-	void pbAcceptClicked();
 
 private:
 	Ui::AddCategoryWindowClass ui;

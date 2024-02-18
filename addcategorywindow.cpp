@@ -1,5 +1,6 @@
 #include "addcategorywindow.h"
 #include "LogSystem.h"
+#include <QMessageBox>
 
 AddCategoryWindow::AddCategoryWindow(QTabWidget* categories, QWidget* parent)
 	: QDialog(parent)
@@ -8,7 +9,29 @@ AddCategoryWindow::AddCategoryWindow(QTabWidget* categories, QWidget* parent)
 	this->setFixedSize(500, 110);
 	this->categories = categories;
 
-	connect(ui.pbAccept, SIGNAL(clicked()), this, SLOT(pbAcceptClicked()));
+	connect(ui.pbAccept, &QPushButton::clicked, this, [=]() {
+		QString nameCategory = getQLEInputCategory();
+		LogSystem::Write("The user adds a new category named " + nameCategory.toStdString());
+		int count = categories->count();
+		for (int i = 0; i < count; i++)
+		{
+			if (nameCategory == categories->widget(i)->objectName()) {
+				LogSystem::Write("The user was trying to add an already existing category");
+				QMessageBox msg(QMessageBox::Icon::Warning, "Creating an existing category", "A category with that name already exists");
+				msg.exec();
+				return;
+			}
+			else if (nameCategory.isEmpty()) 
+			{
+				LogSystem::Write("The user tried to add a category without a name");
+				QMessageBox msg(QMessageBox::Icon::Warning, "Creating a category without a name", "The field with the category name is empty, fill it in");
+				msg.exec();
+				return;
+			}
+		}
+		LogSystem::Write("The new category has been successfully added");
+		accept();
+		});
 	connect(ui.pbReject, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
@@ -18,24 +41,4 @@ AddCategoryWindow::~AddCategoryWindow()
 QString AddCategoryWindow::getQLEInputCategory()
 {
 	return ui.qleInput->text();
-}
-
-void AddCategoryWindow::setQLError(QString error)
-{
-	ui.qlError->setText(error);
-}
-
-void AddCategoryWindow::pbAcceptClicked() {
-	LogSystem::Write("The user adds a new category named " + getQLEInputCategory().toStdString());
-	QString nameCategory = getQLEInputCategory();
-	int count = categories->count();
-	for (int i = 0; i < count; i++)
-	{
-		if (nameCategory == categories->widget(i)->objectName()) {
-			setQLError("A category with that name already exists");
-			return;
-		}
-	}
-	LogSystem::Write("The new category has been successfully added");
-	accept();
 }
