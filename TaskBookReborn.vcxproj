@@ -99,7 +99,6 @@
     <QtUic Include="category.ui" />
     <QtUic Include="completetaskswindow.ui" />
     <QtUic Include="edittaskwindow.ui" />
-    <QtUic Include="menuwindow.ui" />
     <QtUic Include="task.ui" />
     <QtUic Include="taskbook.ui" />
     <QtMoc Include="taskbook.h" />
@@ -111,7 +110,6 @@
     <ClCompile Include="completetaskswindow.cpp" />
     <ClCompile Include="edittaskwindow.cpp" />
     <ClCompile Include="LogSystem.cpp" />
-    <ClCompile Include="menuwindow.cpp" />
     <ClCompile Include="task.cpp" />
     <ClCompile Include="taskbook.cpp" />
     <ClCompile Include="main.cpp" />
@@ -127,9 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="category.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="menuwindow.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="aboutsettings.h" />

@@ -45,9 +45,10 @@ public slots:
 	void deleteTask();
 	void editTask();
 	void onStateChanged(int);
+	void check_deadline();
 
 signals:
-
+	void dateChanged();
 
 private:
 	Ui::TaskClass ui;

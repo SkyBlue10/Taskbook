@@ -11,14 +11,16 @@ Task::Task(QString name, QString text, QString date, QString important, QString 
 	
 	ui.qlNameTask->setText(name);
 	ui.qlTextTask->setText(text);
-	ui.qlDatePeriod->setText(date);
+	this->setDate(date);
 	ui.qlImportant->setText(important);
 	ui.qlCategory->setText(category);
 	this->setAttribute(Qt::WA_StyledBackground, true);
+	this->check_deadline();
 
 	connect(ui.pbDelete, SIGNAL(clicked()), this, SLOT(deleteTask()));
 	connect(ui.pbEdit, SIGNAL(clicked()), this, SLOT(editTask()));
 	connect(ui.qcbIsComplete, SIGNAL(stateChanged(int)), this, SLOT(onStateChanged(int)));
+	connect(this, SIGNAL(dateChanged()), this, SLOT(check_deadline()));
 }
 
 Task::Task(Task* task, QWidget* parent) : Task(task->getName(), task->getText(),
@@ -79,7 +81,7 @@ QString Task::getText()
 
 QString Task::getDate()
 {
-	return ui.qlDatePeriod->text();
+	return ui.qlDeadline->text();
 }
 
 QString Task::getImportant()
@@ -109,7 +111,11 @@ void Task::setText(QString text)
 
 void Task::setDate(QString date)
 {
-	ui.qlDatePeriod->setText(date);
+	if (date != ui.qlDeadline->text()) 
+	{
+		ui.qlDeadline->setText(date);
+		emit dateChanged();
+	}
 }
 
 void Task::setImportant(QString important)
@@ -162,7 +168,7 @@ void Task::editTask()
 
 		ui.qlNameTask->setText(dlg.getNewName());
 		ui.qlTextTask->setText(dlg.getNewText());
-		ui.qlDatePeriod->setText(dlg.getNewDate().toString("dd.MM.yyyy"));
+		this->setDate(dlg.getNewDate().toString("dd.MM.yyyy"));
 		ui.qlImportant->setText(dlg.getNewInmportant());
 		tb->delFromDB(this);
 		tb->writeInDB(this);
@@ -253,4 +259,14 @@ void Task::prepare_complete_task()
 	ui.qcbIsComplete->blockSignals(oldState);
 	ui.qlNameTask->setStyleSheet("text-decoration: line-through;");
 	ui.qlTextTask->setStyleSheet("text-decoration: line-through;");
+}
+
+void Task::check_deadline()
+{
+	std::string date_str = ui.qlDeadline->text().toStdString();
+	QDate task_deadline(stoi(date_str.substr(6, 4)), stoi(date_str.substr(3, 2)), stoi(date_str.substr(0, 2)));
+	if (task_deadline < QDate::currentDate())
+		ui.qlDeadline->setStyleSheet("color: red");
+	else
+		ui.qlDeadline->setStyleSheet("color: black");
 }
