@@ -424,18 +424,18 @@ void TaskBook::onTabCloseRequested(int index)
     LogSystem::Write("the user deletes the category " + category.toStdString());
 
     if (widget != nullptr) {
-        std::map<int, Task*> temp; //временный костыль, который хотелось бы в будущем убрать или хотя бы упростить алгоритм
-        for (auto iter = tasks.begin(); iter != tasks.end(); iter++)
-            if (category == iter->second->getCategory())
-                temp.emplace(iter->first, iter->second);
-
-        for (auto iter : temp)
+        for (auto iter = tasks.begin(); iter != tasks.end();)
         {
-            LogSystem::Write(iter.second, "Deleting a task");
-            delFromDB(iter.second);
-            delete iter.second;
-            tasks.erase(iter.first);
-            LogSystem::Write("Deleting a task was successful");
+            if (category == iter->second->getCategory()) 
+            {
+                LogSystem::Write(iter->second, "Deleting a task");
+                delFromDB(iter->second);
+                delete iter->second;
+                iter = tasks.erase(iter);
+                LogSystem::Write("Deleting a task was successful");
+            }
+            else
+                ++iter;
         }
         LogSystem::Write("Removing a category from ui.categories");
         ui.categories->removeTab(index);
