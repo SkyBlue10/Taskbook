@@ -1,6 +1,7 @@
 #include "addtaskwindow.h"
 #include "LogSystem.h"
 #include <QMessageBox>
+#include <QRegularExpression>
 
 AddTaskWindow::AddTaskWindow(QString category, QWidget* parent)
 	: QDialog(parent)
@@ -14,8 +15,11 @@ AddTaskWindow::AddTaskWindow(QString category, QWidget* parent)
 	ui.qdePeriodEnd->setDate(QDate::currentDate().addDays(1));
 
 	connect(ui.pbAccept, &QPushButton::clicked, this, [=]() {
+		ui.qleNameTask->setText(ui.qleNameTask->text().replace(QRegularExpression("^\\s+"), QString(""))); //заменяет пробел в начале qleNameTask на пустоту (если далее есть символы - пропускаме)
+		ui.qleTextTask->setText(ui.qleTextTask->text().replace(QRegularExpression("^\\s+"), QString(""))); //заменяет пробел в начале qleTextTask на пустоту (если далее есть символы - пропускаме)
+		ui.qleImportant->setText(ui.qleImportant->text().replace(QRegularExpression("^\\s+"), QString(""))); //заменяет пробел в начале qleImportant на пустоту (если далее есть символы - пропускаме)
 		if (!ui.qleNameTask->text().isEmpty() && !ui.qleTextTask->text().isEmpty() && !ui.qleImportant->text().isEmpty())
-			accept();
+			accept(); //если все поля не пустые
 		else 
 		{
 			LogSystem::Write("The user did not fill in some field when creating a new task");

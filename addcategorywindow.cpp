@@ -12,19 +12,19 @@ AddCategoryWindow::AddCategoryWindow(QTabWidget* categories, QWidget* parent)
 	connect(ui.pbAccept, &QPushButton::clicked, this, [=]() {
 		QString nameCategory = getQLEInputCategory();
 		LogSystem::Write("The user adds a new category named " + nameCategory.toStdString());
+		if (nameCategory.isEmpty())
+		{
+			LogSystem::Write("The user tried to add a category without a name");
+			QMessageBox msg(QMessageBox::Icon::Warning, "Creating a category without a name", "The field with the category name is empty, fill it in");
+			msg.exec();
+			return;
+		}
 		int count = categories->count();
 		for (int i = 0; i < count; i++)
 		{
 			if (nameCategory == categories->widget(i)->objectName()) {
 				LogSystem::Write("The user was trying to add an already existing category");
 				QMessageBox msg(QMessageBox::Icon::Warning, "Creating an existing category", "A category with that name already exists");
-				msg.exec();
-				return;
-			}
-			else if (nameCategory.isEmpty()) 
-			{
-				LogSystem::Write("The user tried to add a category without a name");
-				QMessageBox msg(QMessageBox::Icon::Warning, "Creating a category without a name", "The field with the category name is empty, fill it in");
 				msg.exec();
 				return;
 			}

@@ -369,19 +369,17 @@ void TaskBook::addNewTask() {
             Task* task_for_category_All = new Task(
                 dlg.getQLENameTask(), dlg.getQLETextTask(), dlg.getDatePeriodEnding(), dlg.getCBImportant(), nameCategory
             );
-            Task* task_for_current_category = new Task(
-                dlg.getQLENameTask(), dlg.getQLETextTask(), dlg.getDatePeriodEnding(), dlg.getCBImportant(), nameCategory
-            );
+            Task* task_for_current_category = new Task(task_for_category_All);
 
             LogSystem::Write(task_for_category_All, "The user has created a new task for the category " + nameCategory.toStdString());
 
             addTask(task_for_category_All, task_for_current_category);
 
             QVBoxLayout* categoryAll = qobject_cast<QVBoxLayout*>(ui.qsaArea->widget()->layout());
-            Category* currentCategory = qobject_cast<Category*>(ui.categories->currentWidget());
-
             categoryAll->insertWidget(0, task_for_category_All);
+            Category* currentCategory = qobject_cast<Category*>(ui.categories->currentWidget());
             currentCategory->addTask(task_for_current_category);
+
             writeInDB(task_for_category_All);
             writeInDB(task_for_current_category);
         }

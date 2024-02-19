@@ -17,6 +17,18 @@ void BlockOfCompletedTasks::addTask(Task* task)
 	count_tasks_in_block++;
 }
 
+std::vector<Task*> BlockOfCompletedTasks::getTasks()
+{
+	QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(ui.verticalLayout->layout());
+	std::vector<Task*> tasks;
+	for (int i = 0; i < layout->count(); i++)
+	{
+		tasks.push_back(qobject_cast<Task*>(layout->itemAt(i)->widget()));
+	}
+	tasks.erase(tasks.end() - 1); //избавляемся от null значения (от spacer`а)
+	return tasks;
+}
+
 void BlockOfCompletedTasks::setDate(QString date)
 {
 	ui.qlDate->setText(date);

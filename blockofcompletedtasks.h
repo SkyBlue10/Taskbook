@@ -13,6 +13,7 @@ public:
 	~BlockOfCompletedTasks();
 
 	void addTask(Task* task);
+	std::vector<Task*> getTasks();
 
 	void setDate(QString date);
 	QString getDate();

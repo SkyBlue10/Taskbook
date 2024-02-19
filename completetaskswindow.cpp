@@ -1,12 +1,23 @@
 #include "completetaskswindow.h"
 #include <QDateTime>
+#include <QMessageBox>
 #include "LogSystem.h"
+#include "taskbook.h"
 
 CompleteTasksWindow::CompleteTasksWindow(QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
 	this->setMinimumSize(700, 400);
+
+	connect(ui.qpbDeleteTasks, &QPushButton::clicked, this, [=]() {
+		if (cTasks.size() == 0) {
+			QMessageBox msg(QMessageBox::Icon::Warning, "Lack of tasks", "No completed tasks, nothing to delete");
+			msg.exec();
+			return;
+		}
+		deleteAllTasks();
+		});
 }
 
 CompleteTasksWindow::~CompleteTasksWindow()
@@ -52,6 +63,24 @@ void CompleteTasksWindow::del(QString date)
 		}
 	}
 	LogSystem::Write("End of the call CompleteTasksWindow::del(QString date)\n");
+}
+
+void CompleteTasksWindow::deleteAllTasks() 
+{
+	TaskBook* tb = TaskBook::getInstance();
+	LogSystem::Write("Call CompleteTasksWindow::deleteAllTasks()");
+	for (auto iter = cTasks.begin(); iter < cTasks.end();)
+	{
+		BlockOfCompletedTasks* temp = *iter;
+		std::vector<Task*> tasks = temp->getTasks();
+		for (auto task : tasks) 
+		{
+			tb->delFromDB(task);
+		}
+		iter = cTasks.erase(iter);
+		delete temp;
+	}
+	LogSystem::Write("End of the call CompleteTasksWindow::deleteAllTasks()");
 }
 
 void CompleteTasksWindow::check(QString date)

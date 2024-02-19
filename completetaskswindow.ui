@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Completed Tasks</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0" columnstretch="0">
+   <item row="2" column="0">
     <widget class="QScrollArea" name="scrollArea">
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -31,11 +31,24 @@
         <x>0</x>
         <y>0</y>
         <width>466</width>
-        <height>218</height>
+        <height>188</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout"/>
      </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="qpbDeleteTasks">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Delete all tasks</string>
+     </property>
     </widget>
    </item>
   </layout>

@@ -107,7 +107,7 @@ border-width: 2px;
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>501</width>
+            <width>482</width>
             <height>297</height>
            </rect>
           </property>
@@ -169,8 +169,16 @@ border-width: 2px;
      </item>
      <item>
       <widget class="QPushButton" name="qpbCompleteTasks">
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>All tasks</string>
+        <string>All completed tasks</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

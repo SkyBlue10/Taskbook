@@ -18,6 +18,9 @@ public:
 	void addTask(Task* task);
 	void del(QString date);
 
+public slots:
+	void deleteAllTasks();
+
 private:
 	Ui::CompleteTasksWindowClass ui;
 	std::vector<BlockOfCompletedTasks*> cTasks;
